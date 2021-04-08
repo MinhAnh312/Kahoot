@@ -3,10 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/home_module/home_page.dart';
+import 'package:khoot/app/modules/host_page_module/host_page_page.dart';
 import 'package:khoot/app/modules/login_module/login_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
+import '../../theme/HexColor.dart';
+import 'login_controller.dart';
+
+// ignore: must_be_immutable
 class LoginPage extends GetWidget<LoginController> {
+  LoginController loginController = Get.put(LoginController());
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +34,7 @@ class LoginPage extends GetWidget<LoginController> {
                       child: Image.asset('assest/Login.png')),
                   SizedBox(height: 48),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Get.to(HomePage());
                     },
                     child: Container(
@@ -33,7 +42,8 @@ class LoginPage extends GetWidget<LoginController> {
                       decoration: BoxDecoration(
                           color: HexColor("#F7DD83"),
                           borderRadius: BorderRadius.all(Radius.circular(10))),
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 73),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 73),
                       child: Text(
                         "Go straight into a room?",
                         style: GoogleFonts.montserrat(
@@ -54,12 +64,12 @@ class LoginPage extends GetWidget<LoginController> {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 26, vertical: 22),
-              color: Colors.white,
+              color: HexColor("#F1F1FA"),
               child: Column(
                 children: [
-                  textInput("Username", "assest/mail.png"),
+                  textInput("Username", "assest/mail.png",email),
                   SizedBox(height: 20),
-                  textInput("Password", "assest/lock.png"),
+                  textInput("Password", "assest/lock.png",pass),
                   SizedBox(height: 20),
                   button(context, "Sign In"),
                   SizedBox(height: 10),
@@ -89,10 +99,11 @@ class LoginPage extends GetWidget<LoginController> {
     );
   }
 
-  Widget textInput(String hintText, String icon) {
+  Widget textInput(String hintText, String icon,TextEditingController controller) {
     return Container(
       constraints: BoxConstraints(minHeight: 50),
       child: TextFormField(
+        controller: controller,
         maxLines: null,
         decoration: InputDecoration(
             isDense: true,
@@ -131,7 +142,9 @@ class LoginPage extends GetWidget<LoginController> {
 
   Widget button(BuildContext context, String title) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        controller.loginInEmail(email.text, pass.text);
+      },
       child: Container(
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width,
@@ -140,7 +153,7 @@ class LoginPage extends GetWidget<LoginController> {
             borderRadius: BorderRadius.circular(10)),
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Text(
-          "Sign In",
+          title,
           style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w800, fontSize: 14, color: Colors.white),
         ),

@@ -1,3 +1,5 @@
+import '../../app/modules/host_page_module/host_page_page.dart';
+import '../../app/modules/host_page_module/host_page_bindings.dart';
 
 import '../../app/modules/question_module/question_page.dart';
 import '../../app/modules/question_module/question_bindings.dart';
@@ -39,6 +41,11 @@ abstract class AppPages {
       name: Routes.QUESTION,
       page: () => QuestionPage(),
       binding: QuestionBinding(),
+    ),
+    GetPage(
+      name: Routes.HOST_PAGE,
+      page: () => HostPage(),
+      binding: HostPageBinding(),
     ),
   ];
 }
