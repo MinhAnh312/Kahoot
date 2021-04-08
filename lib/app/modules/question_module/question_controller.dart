@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:khoot/app/data/repository/question_repository.dart';
 import 'package:get/get.dart';
-import 'package:khoot/app/modules/home_module/home_page.dart';
-import 'package:khoot/app/modules/login_module/login_page.dart';
 
 class QuestionController extends GetxController {
   final QuestionRepository repository;
