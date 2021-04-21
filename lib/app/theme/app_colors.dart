@@ -1,3 +1,7 @@
 import 'package:flutter/material.dart';
 
-final Color exampleColor = Colors.white;
+import 'HexColor.dart';
+
+final Color white = Colors.white;
+
+final Color green =HexColor("#38AE9C");

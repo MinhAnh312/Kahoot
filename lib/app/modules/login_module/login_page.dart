@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/home_module/home_page.dart';
-import 'package:khoot/app/modules/host_page_module/host_page_page.dart';
 import 'package:khoot/app/modules/login_module/login_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 

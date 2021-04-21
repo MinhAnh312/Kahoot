@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:khoot/app/modules/host_page_module/host_page_page.dart';
+import 'package:khoot/app/modules/host_module/host_page.dart';
 
 class LoginController extends GetxController {
   FirebaseAuth auth ;

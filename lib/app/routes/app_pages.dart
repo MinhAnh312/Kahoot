@@ -1,5 +1,5 @@
-import '../../app/modules/host_page_module/host_page_page.dart';
-import '../../app/modules/host_page_module/host_page_bindings.dart';
+import '../../app/modules/host_module/host_page.dart';
+import '../../app/modules/host_module/host_bindings.dart';
 
 import '../../app/modules/question_module/question_page.dart';
 import '../../app/modules/question_module/question_bindings.dart';
@@ -12,8 +12,8 @@ import '../../app/modules/home_module/home_bindings.dart';
 import '../../app/modules/login_module/login_bindings.dart';
 import '../../app/modules/login_module/login_page.dart';
 import 'package:get/get.dart';
-part './app_routes.dart';
 
+part './app_routes.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -45,7 +45,17 @@ abstract class AppPages {
     GetPage(
       name: Routes.HOST_PAGE,
       page: () => HostPage(),
-      binding: HostPageBinding(),
+      binding: HostBinding(),
+    ),
+    GetPage(
+      name: Routes.HOST,
+      page: () => HostPage(),
+      binding: HostBinding(),
+    ),
+    GetPage(
+      name: Routes.HOST,
+      page: () => HostPage(),
+      binding: HostBinding(),
     ),
   ];
 }

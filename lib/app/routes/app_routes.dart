@@ -9,4 +9,5 @@ abstract class Routes {
   static const QUESTION = '/question'; // Question page
   static const MAP = '/map'; // map page
   static const HOST_PAGE = '/host_page'; // HostPage page
+  static const HOST = '/host'; // host page
 }
