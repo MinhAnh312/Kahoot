@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/data/model/question.dart';
-import 'package:khoot/app/modules/host_module/host_controller.dart';
 
 import '../../theme/HexColor.dart';
 import '../../theme/app_colors.dart';
+import 'edit_question_controller.dart';
 
 // ignore: must_be_immutable
-class HostPage extends GetWidget<HostController> {
-  HostController hostController = Get.put(HostController());
+class EditQuestionPage extends GetWidget<EditQuestionController> {
+  EditQuestionController hostController = Get.put(EditQuestionController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:green,
+      backgroundColor: green,
       appBar: AppBar(
           backgroundColor: HexColor("#38AE9C"),
           elevation: 0,
@@ -52,11 +52,13 @@ class HostPage extends GetWidget<HostController> {
               SizedBox(height: 30),
               Container(
                 decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(10)
+                    color: white, borderRadius: BorderRadius.circular(10)),
+                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                child: Text(
+                  "SUBMIT",
+                  style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w700, fontSize: 14, color: green),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 18,vertical: 15),
-                child: Text("SUBMIT",style: GoogleFonts.montserrat(fontWeight: FontWeight.w700,fontSize: 14,color: green),),
               ),
               SizedBox(height: 30),
             ],
@@ -105,14 +107,15 @@ class HostPage extends GetWidget<HostController> {
                 child: Column(
                   children: [
                     SizedBox(height: 40),
-                    textInput("Add question", Colors.black, HexColor("#F7DD83")),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 28),
-                      child: Divider(
-                        thickness: 1,
-                        color: Color.fromRGBO(0, 0, 0, 0.3),
-                      ),
-                    ),
+                    // textInput(
+                    //     "Add question", Colors.black, HexColor("#F7DD83")),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 28),
+                    //   child: Divider(
+                    //     thickness: 1,
+                    //     color: Color.fromRGBO(0, 0, 0, 0.3),
+                    //   ),
+                    // ),
                     listQuest(context),
                     SizedBox(height: 10),
                   ],
@@ -128,10 +131,11 @@ class HostPage extends GetWidget<HostController> {
                     color: white,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(width: 1.5, color: green),
-                    boxShadow: [BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.25))]
-                ),
+                    boxShadow: [
+                      BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.25))
+                    ]),
                 child: Text(
-                  'Question 1',
+                  'Question',
                   style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700, fontSize: 14, color: green),
                 ),
@@ -141,12 +145,14 @@ class HostPage extends GetWidget<HostController> {
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                    shape: BoxShape.circle,
                     color: green,
                     border: Border.all(width: 1.5, color: green),
-                    boxShadow: [BoxShadow(color: Color.fromRGBO(0, 0, 0, 2))]
+                    boxShadow: [BoxShadow(color: Color.fromRGBO(0, 0, 0, 2))]),
+                child: Icon(
+                  Icons.add_rounded,
+                  color: white,
                 ),
-                child: Icon(Icons.add_rounded,color: white,),
               ))
         ],
       ),
@@ -157,33 +163,40 @@ class HostPage extends GetWidget<HostController> {
     return StreamBuilder<QuerySnapshot>(
         stream: hostController.query.snapshots(),
         builder: (context, snapshot) {
-          QuerySnapshot querySnapshot = snapshot.data;
-          List<Question> listQuestion = querySnapshot.docs
-              .map((e) => Question.fromJson(e.data()))
-              .toList();
-          return Container(
-            height: 250,
-            child: ListView.separated(
-              itemBuilder: (context, int index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 28),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                  decoration: BoxDecoration(
-                      color: green, borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    listQuestion[index].ask ?? "",
-                    maxLines: 1,
-                    style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w400, fontSize: 14, color: white),
-                  ),
-                );
-              },
-              itemCount: listQuestion.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 17);
-              },
-            ),
-          );
+          if (snapshot.hasData) {
+            QuerySnapshot querySnapshot = snapshot.data;
+            List<Question> listQuestion = querySnapshot.docs
+                .map((e) => Question.fromJson(e.data()))
+                .toList();
+            return Container(
+              height: 310,
+              child: ListView.separated(
+                itemBuilder: (context, int index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 28),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                    decoration: BoxDecoration(
+                        color: green, borderRadius: BorderRadius.circular(10)),
+                    child: Text(
+                      listQuestion[index].ask ?? "",
+                      maxLines: 1,
+                      style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: white),
+                    ),
+                  );
+                },
+                itemCount: listQuestion.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 17);
+                },
+              ),
+            );
+          } else
+            return Center(
+              child: CircularProgressIndicator(),
+            );
         });
   }
 }

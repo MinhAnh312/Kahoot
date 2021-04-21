@@ -3,7 +3,7 @@ import 'package:get/get_connect/connect.dart';
 
 const baseUrl = 'http://youapi';
 
-class HostProvider extends GetConnect {
+class EditQuestionProvider extends GetConnect {
 
   Future<Response> getUser(int id) => get('$baseUrl/users/id');
 

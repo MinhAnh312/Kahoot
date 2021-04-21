@@ -1,6 +1,5 @@
-import '../../app/modules/host_module/host_page.dart';
-import '../../app/modules/host_module/host_bindings.dart';
-
+import 'package:khoot/app/modules/host_module/edit_question_bindings.dart';
+import 'package:khoot/app/modules/host_module/edit_question_page.dart';
 import '../../app/modules/question_module/question_page.dart';
 import '../../app/modules/question_module/question_bindings.dart';
 import '../../app/modules/entername_module/entername_page.dart';
@@ -43,19 +42,10 @@ abstract class AppPages {
       binding: QuestionBinding(),
     ),
     GetPage(
-      name: Routes.HOST_PAGE,
-      page: () => HostPage(),
-      binding: HostBinding(),
+      name: Routes.EDIT_QUESTION,
+      page: () => EditQuestionPage(),
+      binding: EditQuestionBinding(),
     ),
-    GetPage(
-      name: Routes.HOST,
-      page: () => HostPage(),
-      binding: HostBinding(),
-    ),
-    GetPage(
-      name: Routes.HOST,
-      page: () => HostPage(),
-      binding: HostBinding(),
-    ),
+
   ];
 }
