@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khoot/app/modules/home_module/home_page.dart';
-import 'package:khoot/app/modules/host_page_module/host_page_page.dart';
 import 'package:khoot/app/modules/login_module/login_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
@@ -35,7 +33,6 @@ class LoginPage extends GetWidget<LoginController> {
                   SizedBox(height: 48),
                   GestureDetector(
                     onTap: () {
-                      Get.to(HomePage());
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
@@ -67,9 +64,9 @@ class LoginPage extends GetWidget<LoginController> {
               color: HexColor("#F1F1FA"),
               child: Column(
                 children: [
-                  textInput("Username", "assest/mail.png",email),
+                  textInput("Username", "assest/mail.png", email, false),
                   SizedBox(height: 20),
-                  textInput("Password", "assest/lock.png",pass),
+                  textInput("Password", "assest/lock.png", pass, true),
                   SizedBox(height: 20),
                   button(context, "Sign In"),
                   SizedBox(height: 10),
@@ -99,12 +96,13 @@ class LoginPage extends GetWidget<LoginController> {
     );
   }
 
-  Widget textInput(String hintText, String icon,TextEditingController controller) {
+  Widget textInput(String hintText, String icon,
+      TextEditingController controller, bool isPassWord) {
     return Container(
       constraints: BoxConstraints(minHeight: 50),
       child: TextFormField(
         controller: controller,
-        maxLines: null,
+        obscureText: isPassWord,
         decoration: InputDecoration(
             isDense: true,
             filled: true,

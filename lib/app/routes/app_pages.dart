@@ -1,6 +1,5 @@
-import '../../app/modules/host_page_module/host_page_page.dart';
-import '../../app/modules/host_page_module/host_page_bindings.dart';
-
+import 'package:khoot/app/modules/host_module/edit_question_bindings.dart';
+import 'package:khoot/app/modules/host_module/edit_question_page.dart';
 import '../../app/modules/question_module/question_page.dart';
 import '../../app/modules/question_module/question_bindings.dart';
 import '../../app/modules/entername_module/entername_page.dart';
@@ -12,8 +11,8 @@ import '../../app/modules/home_module/home_bindings.dart';
 import '../../app/modules/login_module/login_bindings.dart';
 import '../../app/modules/login_module/login_page.dart';
 import 'package:get/get.dart';
-part './app_routes.dart';
 
+part './app_routes.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -43,9 +42,10 @@ abstract class AppPages {
       binding: QuestionBinding(),
     ),
     GetPage(
-      name: Routes.HOST_PAGE,
-      page: () => HostPage(),
-      binding: HostPageBinding(),
+      name: Routes.EDIT_QUESTION,
+      page: () => EditQuestionPage(),
+      binding: EditQuestionBinding(),
     ),
+
   ];
 }

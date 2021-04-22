@@ -8,5 +8,5 @@ abstract class Routes {
   static const ENTERNAME = '/entername'; // EnterName page
   static const QUESTION = '/question'; // Question page
   static const MAP = '/map'; // map page
-  static const HOST_PAGE = '/host_page'; // HostPage page
+  static const EDIT_QUESTION = '/host_page'; // HostPage page
 }
