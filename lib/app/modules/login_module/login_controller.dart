@@ -6,6 +6,7 @@ import '../home_module/home_page.dart';
 
 class LoginController extends GetxController {
   FirebaseAuth auth;
+  String msg;
 
   @override
   void onInit() {
@@ -33,19 +34,22 @@ class LoginController extends GetxController {
     });
   }
 
-  Future<void> loginInEmail(String email, String pass) async {
+  Future<String> loginInEmail(String email, String pass) async {
     try {
       UserCredential userCredential =
           await auth.signInWithEmailAndPassword(email: email, password: pass);
       print(userCredential.user);
+      msg = 'Sucess';
       Get.off(HomePage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Fluttertoast.showToast(msg: "Tài khoản không tồn tại");
         print('No user found for that email.');
+        msg = "Tài khoản không tồn tại";
       } else if (e.code == 'wrong-password') {
         Fluttertoast.showToast(msg: "Sai mật khẩu");
         print('Wrong password provided for that user.');
+        msg = "Sai mật khẩu";
       }
     }
   }
