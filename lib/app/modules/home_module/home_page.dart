@@ -45,7 +45,7 @@ class HomePage extends GetWidget<HomeController> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                "Welcome back, user_name",
+                                "Welcome back, ${homeController.auth.currentUser.email}",
                                 style: GoogleFonts.dmSans(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,

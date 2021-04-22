@@ -1,3 +1,3 @@
 class Const{
-  static const String COLLECTION = "Questions";
+  static const String QUESTION_COLLECTION = "Questions";
 }

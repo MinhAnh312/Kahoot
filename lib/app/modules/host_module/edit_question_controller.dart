@@ -8,7 +8,7 @@ class EditQuestionController extends GetxController {
 
   EditQuestionController({this.repository});
 
-  Query query = FirebaseFirestore.instance.collection(Const.COLLECTION);
+  Query query = FirebaseFirestore.instance.collection(Const.QUESTION_COLLECTION);
 
 
 }

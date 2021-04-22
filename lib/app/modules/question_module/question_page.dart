@@ -40,95 +40,97 @@ class _QuestionPageState extends State<QuestionPage> {
         ),
         centerTitle: true,
       ),
-      body: Obx(() => Column(
-            children: [
-              SizedBox(height: 50),
-              Center(
-                child: Text(
-                  "Placeholder question:",
-                  style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                      color: Colors.white),
+      body: Obx(() => SingleChildScrollView(
+        child: Column(
+              children: [
+                SizedBox(height: 50),
+                Center(
+                  child: Text(
+                    "Placeholder question:",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        color: Colors.white),
+                  ),
                 ),
-              ),
-              questionText("1 + 1 = ?"),
-              SizedBox(height: 40),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding:
-                    EdgeInsets.only(top: 22, bottom: 75, left: 25, right: 25),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50)),
-                child: Column(
-                  children: [
-                    Container(
-                        width: 50,
-                        height: 50,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "${questionController.start}",
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w700, fontSize: 18),
-                        ),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: HexColor("#83C5BD")))),
-                    SizedBox(height: 20),
-                    Container(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: questionController.choose.length,
-                        itemBuilder: (context, int index) {
-                          HexColor backGroundColor;
-                          HexColor textColor;
-                          if (questionController.indexChoose.value == index) {
-                            backGroundColor = HexColor("#38AE9C");
-                            textColor = HexColor("#FFFFFF");
-                            if (!questionController.isTrue.value) {
-                              backGroundColor = HexColor("#D04A4E");
+                questionText(questionController.question.value.ask ?? ""),
+                SizedBox(height: 40),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding:
+                      EdgeInsets.only(top: 22, bottom: 75, left: 25, right: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 50,
+                          height: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${questionController.start}",
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w700, fontSize: 18),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: HexColor("#83C5BD")))),
+                      SizedBox(height: 20),
+                      Container(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: questionController.choose.length,
+                          itemBuilder: (context, int index) {
+                            HexColor backGroundColor;
+                            HexColor textColor;
+                            if (questionController.indexChoose.value == index) {
+                              backGroundColor = HexColor("#38AE9C");
+                              textColor = HexColor("#FFFFFF");
+                              if (!questionController.isTrue.value) {
+                                backGroundColor = HexColor("#D04A4E");
+                              }
+                            } else {
+                              backGroundColor = HexColor("#FFFFFF");
+                              textColor = HexColor("#38AE9C");
                             }
-                          } else {
-                            backGroundColor = HexColor("#FFFFFF");
-                            textColor = HexColor("#38AE9C");
-                          }
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (questionController.start.value > 0) {
-                                  questionController.chooseAnswer(index);
-                                }
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: backGroundColor,
-                                  borderRadius: BorderRadius.circular(50),
-                                  border:
-                                      Border.all(color: HexColor("#38AE9C"))),
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                questionController.choose[index],
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 22,
-                                    color: textColor,
-                                    fontWeight: FontWeight.w700),
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (questionController.start.value > 0) {
+                                    questionController.chooseAnswer(index);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: backGroundColor,
+                                    borderRadius: BorderRadius.circular(50),
+                                    border:
+                                        Border.all(color: HexColor("#38AE9C"))),
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  questionController.choose[index],
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 18,
+                                      color: textColor,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(height: 15);
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          )),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 15);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+      )),
     );
   }
 
@@ -136,8 +138,9 @@ class _QuestionPageState extends State<QuestionPage> {
     return Center(
       child: Text(
         question,
+        textAlign: TextAlign.center,
         style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.w800, fontSize: 22, color: Colors.white),
+            fontWeight: FontWeight.w800, fontSize: 18, color: Colors.white),
       ),
     );
   }

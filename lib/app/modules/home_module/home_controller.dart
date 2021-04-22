@@ -16,4 +16,5 @@ class HomeController extends GetxController {
       Get.off(LoginPage());
     });
   }
+
 }
