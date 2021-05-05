@@ -40,6 +40,30 @@
       });
     }
   </script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-firestore.js"></script>
+
+  <script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBr5l8EN26IIt1K-kORyJRmpFKavrXH2t8",
+    authDomain: "kahoot-firebase.firebaseapp.com",
+    databaseURL: "https://kahoot-firebase-default-rtdb.firebaseio.com",
+    projectId: "kahoot-firebase",
+    storageBucket: "kahoot-firebase.appspot.com",
+    messagingSenderId: "151188114538",
+    appId: "1:151188114538:web:a3e3091c77ab30ceb44e13",
+    measurementId: "G-HVQVEDTHB5"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
