@@ -11,3 +11,4 @@ Refer to our [landing page](google.com) for an overview of the application.
 18020159 - Nguyễn Minh Anh  
 
 ## Testing result
+![image](https://user-images.githubusercontent.com/43447012/117179136-065cac80-adfd-11eb-9d73-7053136aa9f5.png)
