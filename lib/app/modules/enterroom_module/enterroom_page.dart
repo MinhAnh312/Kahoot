@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/entername_module/entername_page.dart';
@@ -54,8 +55,12 @@ class EnterRoomPage extends GetWidget<EnterRoomController> {
       ),
       constraints: BoxConstraints(minHeight: 41),
       child: TextFormField(
+        inputFormatters: [
+          new LengthLimitingTextInputFormatter(6),
+          FilteringTextInputFormatter.digitsOnly
+        ],
         textAlign: TextAlign.center,
-        maxLines: null,
+        maxLines: 1,
         decoration: InputDecoration(
           border: InputBorder.none,
             isDense: true,
@@ -88,5 +93,4 @@ class EnterRoomPage extends GetWidget<EnterRoomController> {
       ),
     );
   }
-
 }

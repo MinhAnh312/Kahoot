@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_page.dart';
 import 'package:khoot/app/modules/home_module/home_controller.dart';
 import 'package:khoot/app/modules/host_module/edit_question_page.dart';
+import 'package:khoot/app/modules/result_module/result_page.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
 // ignore: must_be_immutable
@@ -116,7 +117,10 @@ class HomePage extends GetWidget<HomeController> {
                           fontWeight: FontWeight.w700, fontSize: 14)),
                   SizedBox(height: 24),
                   buttonPlay(
-                      context, "Explore room", "#F7DD83", Colors.black, () {}),
+                      context, "Explore room", "#F7DD83", Colors.black,
+                      () {
+                    Get.to(ResultPage());
+                  }),
                   SizedBox(height: 40),
                   Divider(color: Colors.grey),
                   SizedBox(height: 32),
