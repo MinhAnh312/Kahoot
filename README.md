@@ -1,5 +1,5 @@
 # Kahoot
-A simple Kahoot mobile clone with revised UI and functionalities.
+A simple Kahoot mobile clone with revised UI and functionalities.  
 Homework project for Mobile Cloud Computing class.
 
 Refer to our [landing page](google.com) for an overview of the application.
