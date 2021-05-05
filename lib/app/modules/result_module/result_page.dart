@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:khoot/app/modules/result_module/result_page.dart';
+import 'package:khoot/app/modules/finalresult_module/finalresult_page.dart';
 import 'package:khoot/app/modules/result_module/result_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
@@ -108,6 +108,14 @@ class ResultPage extends GetWidget<ResultController> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: buttonPlay(
+                    context, "Next in 3 2 1", "#F7DD83", Colors.black,
+                        () {
+                      Get.to(FinalResultPage());
+                    }),
+              ),
             //   Container(
             //     padding: EdgeInsets.symmetric(horizontal: 70),
             //     child: Image.asset('assest/Login.png', height: 70),
@@ -124,4 +132,25 @@ class ResultPage extends GetWidget<ResultController> {
       ),
     );
   }
+}
+
+Widget buttonPlay(BuildContext context, String title, String color,
+    Color fontColor, VoidCallback voidCallback) {
+  return GestureDetector(
+    onTap: voidCallback,
+    child: Container(
+      alignment: Alignment.center,
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(vertical: 13),
+      decoration: BoxDecoration(
+        color: HexColor(color),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Text(
+        title,
+        style: GoogleFonts.montserrat(
+            fontWeight: FontWeight.w600, fontSize: 14, color: fontColor),
+      ),
+    ),
+  );
 }
