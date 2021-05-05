@@ -10,6 +10,10 @@ import '../../app/modules/home_module/home_page.dart';
 import '../../app/modules/home_module/home_bindings.dart';
 import '../../app/modules/login_module/login_bindings.dart';
 import '../../app/modules/login_module/login_page.dart';
+import '../../app/modules/result_module/result_binding.dart';
+import '../../app/modules/result_module/result_page.dart';
+import '../../app/modules/finalresult_module/finalresult_binding.dart';
+import '../../app/modules/finalresult_module/finalresult_page.dart';
 import 'package:get/get.dart';
 
 part './app_routes.dart';
@@ -46,6 +50,15 @@ abstract class AppPages {
       page: () => EditQuestionPage(),
       binding: EditQuestionBinding(),
     ),
-
+    GetPage(
+      name: Routes.RESULT,
+      page: () => ResultPage(),
+      binding: ResultBinding(),
+    ),
+    GetPage(
+      name: Routes.FINAL_RESULT,
+      page: () => FinalResultPage(),
+      binding: FinalResultBinding(),
+    ),
   ];
 }
