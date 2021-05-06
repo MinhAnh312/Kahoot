@@ -1,8 +1,8 @@
-name: Demo App Android Release
+name: App Android Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [ release ]
 
 jobs:
   version:
