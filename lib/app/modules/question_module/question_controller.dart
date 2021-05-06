@@ -6,6 +6,7 @@ import 'package:khoot/app/const/const.dart';
 import 'package:khoot/app/data/model/question.dart';
 import 'package:khoot/app/data/repository/question_repository.dart';
 import 'package:get/get.dart';
+import 'package:khoot/app/modules/result_module/result_page.dart';
 
 class QuestionController extends GetxController {
   final QuestionRepository repository;
@@ -13,7 +14,10 @@ class QuestionController extends GetxController {
   QuestionController({this.repository});
 
   Timer _timer;
-  RxInt start = 10.obs;
+  RxInt start = 20.obs;
+  RxInt totalQuestion = 5.obs;
+  RxInt questionIndex = 1.obs;
+  RxInt result = 0.obs;
 
   Query query =
       FirebaseFirestore.instance.collection(Const.QUESTION_COLLECTION);
@@ -25,8 +29,8 @@ class QuestionController extends GetxController {
   RxInt numberOfQuestion = 0.obs;
 
   RxString answer = "2".obs;
-  RxInt indexChoose = 99.obs;
-  RxBool isTrue = false.obs;
+  RxInt indexChoose;
+  RxBool isTrue;
 
   Future<void> getListQuestion() async {
     QuerySnapshot querySnapshot = await query.get();
@@ -34,11 +38,13 @@ class QuestionController extends GetxController {
       listQuestion
           .add(Question.fromJson(querySnapshot.docChanges[i].doc.data()));
     }
-
   }
 
-  void getQuestion(){
-    print(listQuestion.length);
+  void getQuestion() {
+    start = 20.obs;
+    indexChoose = 99.obs;
+    isTrue = false.obs;
+    print(questionIndex);
     numberOfQuestion.value = Random().nextInt(listQuestion.length);
     question.value = listQuestion[numberOfQuestion.value];
     choose.clear();
@@ -47,6 +53,11 @@ class QuestionController extends GetxController {
     choose.add(question.value.wrongAnswer2);
     choose.add(question.value.wrongAnswer3);
     answer.value = question.value.answer;
+    print(choose);
+    print(answer);
+    shuffle(choose);
+    listQuestion.remove(question.value);
+    startTimer();
   }
 
   @override
@@ -54,26 +65,31 @@ class QuestionController extends GetxController {
     // TODO: implement onInit
     await getListQuestion();
     getQuestion();
-    shuffle(choose);
-
-    startTimer();
     super.onInit();
+  }
+
+  void resetQuest() {
+    // questionIndex.value++;
+    // if (questionIndex.value > totalQuestion.value) {
+    //   stop();
+    // } else {
+    //   getQuestion();
+    // }
+    if (questionIndex.value < totalQuestion.value) {
+      questionIndex++;
+      getQuestion();
+    } else
+      stop();
   }
 
   List shuffle(List items) {
     var random = new Random();
-
-    // Go through all elements.
     for (var i = items.length - 1; i > 0; i--) {
-
-      // Pick a pseudorandom number according to the list length
       var n = random.nextInt(i + 1);
-
       var temp = items[i];
       items[i] = items[n];
       items[n] = temp;
     }
-
     return items;
   }
 
@@ -91,30 +107,36 @@ class QuestionController extends GetxController {
       (Timer timer) {
         if (start.value == 0) {
           timer.cancel();
+          isShowResult();
         } else {
           start.value--;
         }
       },
     );
-    isShowResult();
   }
 
   void chooseAnswer(int index) {
     indexChoose.value = index;
     start.value = 0;
+    _timer.cancel();
     isShowResult();
-    print(isTrue.value);
-    Timer.periodic(new Duration(milliseconds: 2000), (timer) {
-      //Get.to(HomePage());
-    });
   }
 
   void isShowResult() {
     if (start.value == 0) {
-      if (choose.elementAt(indexChoose.value) == answer.value) {
+      if (choose.indexOf(answer.value) == indexChoose.value) {
         isTrue.value = true;
+        result++;
+        print(result);
       } else
         isTrue.value = false;
+      new Timer(new Duration(milliseconds: 2000), () async {
+        resetQuest();
+      });
     }
+  }
+
+  void stop() {
+    Get.to(ResultPage(result.value));
   }
 }

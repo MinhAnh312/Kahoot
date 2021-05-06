@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/finalresult_module/finalresult_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 

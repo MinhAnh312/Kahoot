@@ -52,7 +52,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.RESULT,
-      page: () => ResultPage(),
+      page: () => ResultPage(0),
       binding: ResultBinding(),
     ),
     GetPage(

@@ -15,33 +15,33 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: HexColor("#38AE9C"),
-      appBar: AppBar(
-        backgroundColor: HexColor("#38AE9C"),
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: Container(
-            padding: EdgeInsets.all(15),
-            child: Image.asset(
-              'assest/back_button.png',
-              height: 24,
-              width: 14,
+    return Obx(() => Scaffold(
+          backgroundColor: HexColor("#38AE9C"),
+          appBar: AppBar(
+            backgroundColor: HexColor("#38AE9C"),
+            elevation: 0,
+            leading: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                padding: EdgeInsets.all(15),
+                child: Image.asset(
+                  'assest/back_button.png',
+                  height: 24,
+                  width: 14,
+                ),
+              ),
             ),
+            title: Text(
+              "Question ${questionController.questionIndex.value}/5",
+              style: GoogleFonts.montserrat(
+                  fontSize: 20, fontWeight: FontWeight.w400),
+            ),
+            centerTitle: true,
           ),
-        ),
-        title: Text(
-          "Question 2/5",
-          style:
-              GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w400),
-        ),
-        centerTitle: true,
-      ),
-      body: Obx(() => SingleChildScrollView(
-        child: Column(
+          body: SingleChildScrollView(
+            child: Column(
               children: [
                 SizedBox(height: 50),
                 Center(
@@ -109,7 +109,7 @@ class _QuestionPageState extends State<QuestionPage> {
                                     border:
                                         Border.all(color: HexColor("#38AE9C"))),
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 10),
+                                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
                                 child: Text(
                                   questionController.choose[index],
                                   style: GoogleFonts.montserrat(
@@ -130,12 +130,13 @@ class _QuestionPageState extends State<QuestionPage> {
                 )
               ],
             ),
-      )),
-    );
+          ),
+        ));
   }
 
   Widget questionText(String question) {
-    return Center(
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
       child: Text(
         question,
         textAlign: TextAlign.center,

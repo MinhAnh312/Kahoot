@@ -119,7 +119,7 @@ class HomePage extends GetWidget<HomeController> {
                   buttonPlay(
                       context, "Explore room", "#F7DD83", Colors.black,
                       () {
-                    Get.to(ResultPage());
+                    Get.to(ResultPage(0));
                   }),
                   SizedBox(height: 40),
                   Divider(color: Colors.grey),
