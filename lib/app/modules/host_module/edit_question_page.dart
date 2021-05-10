@@ -9,9 +9,8 @@ import '../../theme/HexColor.dart';
 import '../../theme/app_colors.dart';
 import 'edit_question_controller.dart';
 
-// ignore: must_be_immutable
 class EditQuestionPage extends GetWidget<EditQuestionController> {
-  EditQuestionController hostController = Get.put(EditQuestionController());
+  final EditQuestionController hostController = Get.put(EditQuestionController());
 
   @override
   Widget build(BuildContext context) {

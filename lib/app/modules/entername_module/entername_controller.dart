@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:khoot/app/const/const.dart';
+import 'package:khoot/app/data/model/user_join.dart';
 import 'package:khoot/app/data/repository/entername_repository.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 import 'package:khoot/app/modules/question_module/question_page.dart';
@@ -11,58 +12,46 @@ class EnterNameController extends GetxController {
   EnterNameController({this.repository});
 
   String roomId;
+  bool isJoined = false;
+
+  var document;
 
   @override
   void onInit() async {
     EnterRoomController controller = Get.find();
     roomId = controller.roomId;
+    document = FirebaseFirestore.instance
+        .collection(Const.ROOM_COLLECTION)
+        .doc(roomId);
     // TODO: implement onInit
     super.onInit();
   }
 
-  Future<void> joinRoom(String name) async {
-    var document = FirebaseFirestore.instance
-        .collection(Const.ROOM_COLLECTION)
-        .doc(roomId);
+  Future<bool> joinRoom(String name) async {
     var snapshot = await document.get();
-    try {
+    if (snapshot.data().containsKey("user_join")) {
       var list = snapshot.get("user_join") as List;
       List<UserJoin> listUser = list.map((e) => UserJoin.fromJson(e)).toList();
       bool isExistName =
           listUser.indexWhere((element) => element.name == name) >= 0;
-      print(listUser.indexWhere((element) => element.name == name));
       if (!isExistName) {
-        document.set({
-          "user_join": FieldValue.arrayUnion([
-            {"name": name}
-          ])
-        }, SetOptions(merge: true));
-        Get.to(QuestionPage());
+        joinRoomWriteDB(name);
+      } else {
+        isJoined = false;
       }
-      print(snapshot.data());
-    } catch (e) {
-      document.set({
-        "user_join": [
-          {"name": name}
-        ]
-      }, SetOptions(merge: true));
-      print(e.toString());
+    } else {
+      joinRoomWriteDB(name);
     }
-  }
-}
-
-class UserJoin {
-  String name;
-
-  UserJoin({this.name});
-
-  UserJoin.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+    return isJoined;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    return data;
+  void joinRoomWriteDB(String name) {
+    document.set({
+      "user_join": FieldValue.arrayUnion([
+        {"name": name, "score": 0}
+      ])
+    }, SetOptions(merge: true));
+    Get.to(QuestionPage());
+    isJoined = true;
   }
 }

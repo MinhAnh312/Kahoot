@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:khoot/app/const/const.dart';
 import 'package:khoot/app/data/model/question.dart';
+import 'package:khoot/app/data/model/user_join.dart';
 import 'package:khoot/app/data/repository/question_repository.dart';
 import 'package:get/get.dart';
+import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 import 'package:khoot/app/modules/result_module/result_page.dart';
 
 class QuestionController extends GetxController {
@@ -19,8 +20,13 @@ class QuestionController extends GetxController {
   RxInt questionIndex = 1.obs;
   RxInt result = 0.obs;
 
+  String roomId;
+
   Query query =
       FirebaseFirestore.instance.collection(Const.QUESTION_COLLECTION);
+
+  Query roomQuery =
+      FirebaseFirestore.instance.collection(Const.ROOM_COLLECTION);
 
   RxList<Question> listQuestion = <Question>[].obs;
   Rx<Question> question = Question().obs;
@@ -32,7 +38,13 @@ class QuestionController extends GetxController {
   RxInt indexChoose;
   RxBool isTrue;
 
+
   Future<void> getListQuestion() async {
+    QuerySnapshot snapshot =
+        await roomQuery.where("room_key", whereIn: [roomId]).get();
+    var room = RoomInfo.fromJson(snapshot.docs.first.data());
+    totalQuestion = room.totalQuestion.obs;
+    questionIndex = room.indexQuestion.obs;
     QuerySnapshot querySnapshot = await query.get();
     for (int i = 0; i < querySnapshot.docChanges.length; i++) {
       listQuestion
@@ -44,7 +56,6 @@ class QuestionController extends GetxController {
     start = 20.obs;
     indexChoose = 99.obs;
     isTrue = false.obs;
-    print(questionIndex);
     numberOfQuestion.value = Random().nextInt(listQuestion.length);
     question.value = listQuestion[numberOfQuestion.value];
     choose.clear();
@@ -53,8 +64,6 @@ class QuestionController extends GetxController {
     choose.add(question.value.wrongAnswer2);
     choose.add(question.value.wrongAnswer3);
     answer.value = question.value.answer;
-    print(choose);
-    print(answer);
     shuffle(choose);
     listQuestion.remove(question.value);
     startTimer();
@@ -63,6 +72,8 @@ class QuestionController extends GetxController {
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
+    EnterRoomController controller = Get.find();
+    roomId = controller.roomId;
     await getListQuestion();
     getQuestion();
     super.onInit();
@@ -118,7 +129,7 @@ class QuestionController extends GetxController {
   void chooseAnswer(int index) {
     indexChoose.value = index;
     start.value = 0;
-    _timer.cancel();
+     _timer.cancel();
     isShowResult();
   }
 
@@ -127,11 +138,10 @@ class QuestionController extends GetxController {
       if (choose.indexOf(answer.value) == indexChoose.value) {
         isTrue.value = true;
         result++;
-        print(result);
       } else
         isTrue.value = false;
       new Timer(new Duration(milliseconds: 2000), () async {
-        resetQuest();
+        //resetQuest();
       });
     }
   }

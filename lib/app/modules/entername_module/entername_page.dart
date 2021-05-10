@@ -40,8 +40,15 @@ class EnterNamePage extends GetWidget<EnterNameController> {
               textInput("Enter your nickname"),
               SizedBox(height: 22),
               buttonPlay(context, "Go", "#F6E084", Colors.black, () {
-                enterNameController.joinRoom(nameController.text);
-                //Get.to(QuestionPage());
+                enterNameController.joinRoom(nameController.text).then((value) {
+                  if(value){
+                    Get.to(QuestionPage());
+                  }
+                  else {
+                    final snackBar = SnackBar(content: Text('Tên đã trùng vui lòng đổi tên'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                });
               })
             ],
           )

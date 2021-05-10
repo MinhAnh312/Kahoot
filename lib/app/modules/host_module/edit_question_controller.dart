@@ -10,5 +10,4 @@ class EditQuestionController extends GetxController {
 
   Query query = FirebaseFirestore.instance.collection(Const.QUESTION_COLLECTION);
 
-
 }
