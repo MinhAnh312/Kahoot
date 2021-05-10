@@ -7,6 +7,9 @@ import 'package:khoot/app/theme/HexColor.dart';
 import 'entername_controller.dart';
 
 class EnterNamePage extends GetWidget<EnterNameController> {
+  final EnterNameController enterNameController = Get.put(EnterNameController());
+  final TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +40,8 @@ class EnterNamePage extends GetWidget<EnterNameController> {
               textInput("Enter your nickname"),
               SizedBox(height: 22),
               buttonPlay(context, "Go", "#F6E084", Colors.black, () {
-                Get.to(QuestionPage());
+                enterNameController.joinRoom(nameController.text);
+                //Get.to(QuestionPage());
               })
             ],
           )
@@ -54,6 +58,7 @@ class EnterNamePage extends GetWidget<EnterNameController> {
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
       constraints: BoxConstraints(minHeight: 41),
       child: TextFormField(
+        controller: nameController,
         textAlign: TextAlign.center,
         maxLines: null,
         decoration: InputDecoration(

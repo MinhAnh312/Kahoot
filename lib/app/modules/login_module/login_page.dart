@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:khoot/app/modules/enterroom_module/enterroom_page.dart';
 import 'package:khoot/app/modules/login_module/login_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
@@ -33,6 +34,7 @@ class LoginPage extends GetWidget<LoginController> {
                   SizedBox(height: 48),
                   GestureDetector(
                     onTap: () {
+                      Get.to(EnterRoomPage());
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
