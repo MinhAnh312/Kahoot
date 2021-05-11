@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/const/const.dart';
-import 'package:khoot/app/data/model/user_join.dart';
 import 'package:khoot/app/modules/question_module/question_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 import 'package:khoot/app/theme/app_colors.dart';
@@ -19,57 +17,46 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: questionController.roomQuery.where("room_key",
-            whereIn: [questionController.roomId]).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            QuerySnapshot data = snapshot.data;
-            var room = RoomInfo.fromJson(data.docs.first.data());
-            var status = room.status;
-            Widget widget;
-            if (status == Const.START) {
-              widget = startBuild();
-            } else if (status == Const.PENDING)
-              widget = pendingBuild();
-            else if (status == Const.NEXT_QUESTION) {
-              questionController.resetQuest();
-              widget = startBuild();
-            } else
-              widget = Container(
-                alignment: Alignment.center,
-                child: Text("Đợi chờ tín hiệu từ host"),
-              );
-            return Scaffold(
-              backgroundColor: HexColor("#38AE9C"),
-              appBar: AppBar(
-                backgroundColor: HexColor("#38AE9C"),
-                elevation: 0,
-                leading: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    child: Image.asset(
-                      'assest/back_button.png',
-                      height: 24,
-                      width: 14,
-                    ),
-                  ),
-                ),
-                title: Obx(() => Text(
-                      "Question ${questionController.questionIndex}/${questionController.totalQuestion}",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 20, fontWeight: FontWeight.w400),
-                    )),
-                centerTitle: true,
+    return Obx(() {
+      var status = questionController.room.value.status;
+      Widget widget;
+      if (status == Const.START) {
+        widget = startBuild();
+      } else if (status == Const.PENDING)
+        widget = pendingBuild();
+      else
+        widget = Container(
+          alignment: Alignment.center,
+          child: Text("Đợi chờ tín hiệu từ host"),
+        );
+      return Scaffold(
+        backgroundColor: HexColor("#38AE9C"),
+        appBar: AppBar(
+          backgroundColor: HexColor("#38AE9C"),
+          elevation: 0,
+          leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Container(
+              padding: EdgeInsets.all(15),
+              child: Image.asset(
+                'assest/back_button.png',
+                height: 24,
+                width: 14,
               ),
-              body: widget,
-            );
-          } else
-            return Center(child: CircularProgressIndicator());
-        });
+            ),
+          ),
+          title: Text(
+            "Question ${questionController.room.value.indexQuestion}/${questionController.room.value.totalQuestion}",
+            style: GoogleFonts.montserrat(
+                fontSize: 20, fontWeight: FontWeight.w400),
+          ),
+          centerTitle: true,
+        ),
+        body: widget,
+      );
+    });
   }
 
   Widget questionText(String question) {
@@ -107,7 +94,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       color: Colors.white),
                 ),
               ),
-              questionText(questionController.question.value.ask ?? ""),
+              questionText(questionController.question.ask ?? ""),
               SizedBox(height: 40),
               Container(
                 width: MediaQuery.of(context).size.width,

@@ -1,5 +1,6 @@
 class RoomInfo {
   int indexQuestion;
+  int question ;
   String roomId;
   String roomKey;
   String status;
@@ -12,7 +13,7 @@ class RoomInfo {
         this.roomKey,
         this.status,
         this.totalQuestion,
-        this.userJoin});
+        this.userJoin,this.question});
 
   RoomInfo.fromJson(Map<String, dynamic> json) {
     indexQuestion = json['index_question'];
@@ -20,6 +21,7 @@ class RoomInfo {
     roomKey = json['room_key'];
     status = json['status'];
     totalQuestion = json['total_question'];
+    question = json['question'];
     if (json['user_join'] != null) {
       userJoin = <UserJoin>[];
       json['user_join'].forEach((v) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_page.dart';
+import 'package:khoot/app/modules/explore_room_module/explore_room_page.dart';
 import 'package:khoot/app/modules/home_module/home_controller.dart';
 import 'package:khoot/app/modules/host_module/edit_question_page.dart';
 import 'package:khoot/app/modules/result_module/result_page.dart';
@@ -119,7 +120,7 @@ class HomePage extends GetWidget<HomeController> {
                   buttonPlay(
                       context, "Explore room", "#F7DD83", Colors.black,
                       () {
-                    Get.to(ResultPage(0));
+                    Get.to(ExploreRoomPage());
                   }),
                   SizedBox(height: 40),
                   Divider(color: Colors.grey),

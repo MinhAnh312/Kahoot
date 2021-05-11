@@ -1,3 +1,5 @@
+import '../../app/modules/explore_room_module/explore_room_page.dart';
+import '../../app/modules/explore_room_module/explore_room_bindings.dart';
 import 'package:khoot/app/modules/host_module/edit_question_bindings.dart';
 import 'package:khoot/app/modules/host_module/edit_question_page.dart';
 import '../../app/modules/question_module/question_page.dart';
@@ -59,6 +61,12 @@ abstract class AppPages {
       name: Routes.FINAL_RESULT,
       page: () => FinalResultPage(),
       binding: FinalResultBinding(),
+    ),
+
+    GetPage(
+      name: Routes.EXPLORE_ROOM,
+      page: () => ExploreRoomPage(),
+      binding: ExploreRoomBinding(),
     ),
   ];
 }

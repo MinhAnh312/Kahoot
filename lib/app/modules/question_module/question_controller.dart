@@ -14,7 +14,7 @@ class QuestionController extends GetxController {
 
   QuestionController({this.repository});
 
-  Timer _timer;
+  Timer _timer ;
   RxInt start = 20.obs;
   RxInt totalQuestion = 5.obs;
   RxInt questionIndex = 1.obs;
@@ -29,22 +29,18 @@ class QuestionController extends GetxController {
       FirebaseFirestore.instance.collection(Const.ROOM_COLLECTION);
 
   RxList<Question> listQuestion = <Question>[].obs;
-  Rx<Question> question = Question().obs;
+  Question question = Question();
+  Rx<RoomInfo> room = RoomInfo().obs;
 
   RxList<String> choose = <String>[].obs;
   RxInt numberOfQuestion = 0.obs;
 
-  RxString answer = "2".obs;
+  String answer = "2";
+  RxString status = "pending".obs;
   RxInt indexChoose;
   RxBool isTrue;
 
-
   Future<void> getListQuestion() async {
-    QuerySnapshot snapshot =
-        await roomQuery.where("room_key", whereIn: [roomId]).get();
-    var room = RoomInfo.fromJson(snapshot.docs.first.data());
-    totalQuestion = room.totalQuestion.obs;
-    questionIndex = room.indexQuestion.obs;
     QuerySnapshot querySnapshot = await query.get();
     for (int i = 0; i < querySnapshot.docChanges.length; i++) {
       listQuestion
@@ -56,16 +52,15 @@ class QuestionController extends GetxController {
     start = 20.obs;
     indexChoose = 99.obs;
     isTrue = false.obs;
-    numberOfQuestion.value = Random().nextInt(listQuestion.length);
-    question.value = listQuestion[numberOfQuestion.value];
+    question = listQuestion[numberOfQuestion.value];
     choose.clear();
-    choose.add(question.value.answer);
-    choose.add(question.value.wrongAnswer1);
-    choose.add(question.value.wrongAnswer2);
-    choose.add(question.value.wrongAnswer3);
-    answer.value = question.value.answer;
+    choose.add(question.answer);
+    choose.add(question.wrongAnswer1);
+    choose.add(question.wrongAnswer2);
+    choose.add(question.wrongAnswer3);
+    answer = question.answer;
     shuffle(choose);
-    listQuestion.remove(question.value);
+    listQuestion.remove(question);
     startTimer();
   }
 
@@ -75,7 +70,23 @@ class QuestionController extends GetxController {
     EnterRoomController controller = Get.find();
     roomId = controller.roomId;
     await getListQuestion();
-    getQuestion();
+    roomQuery = roomQuery.where("room_key", whereIn: [roomId]);
+    roomQuery.snapshots().listen((querySnapshot) {
+      querySnapshot.docs.forEach((change) {
+        print(change.data());
+        room.value = RoomInfo.fromJson(change.data());
+        totalQuestion.value = room.value.totalQuestion;
+        status.value = room.value.status;
+        if(status.value == Const.START){
+          if(questionIndex.value <= room.value.indexQuestion){
+            questionIndex.value = room.value.indexQuestion;
+            numberOfQuestion.value = room.value.question;
+            getQuestion();
+          }
+        }
+      });
+    });
+    //getQuestion();
     super.onInit();
   }
 
@@ -87,7 +98,7 @@ class QuestionController extends GetxController {
     //   getQuestion();
     // }
     if (questionIndex.value < totalQuestion.value) {
-      questionIndex++;
+      // questionIndex++;
       getQuestion();
     } else
       stop();
@@ -129,13 +140,13 @@ class QuestionController extends GetxController {
   void chooseAnswer(int index) {
     indexChoose.value = index;
     start.value = 0;
-     _timer.cancel();
+    _timer.cancel();
     isShowResult();
   }
 
   void isShowResult() {
     if (start.value == 0) {
-      if (choose.indexOf(answer.value) == indexChoose.value) {
+      if (choose.indexOf(answer) == indexChoose.value) {
         isTrue.value = true;
         result++;
       } else

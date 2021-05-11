@@ -11,4 +11,7 @@ abstract class Routes {
   static const EDIT_QUESTION = '/host_page'; // HostPage page
   static const RESULT = '/result_page'; // Result page
   static const FINAL_RESULT ='/finalresult_page';
+  static const EXPLORE = '/explore'; // explore page
+  static const EXPLORE_ROON = '/explore_roon'; // ExploreRoon page
+  static const EXPLORE_ROOM = '/explore_room'; // ExploreRoom page
 }
