@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/const/const.dart';
+import 'package:khoot/app/data/model/user_join.dart';
 import 'package:khoot/app/modules/question_module/question_controller.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 import 'package:khoot/app/theme/app_colors.dart';
@@ -24,6 +25,8 @@ class _QuestionPageState extends State<QuestionPage> {
         widget = startBuild();
       } else if (status == Const.PENDING)
         widget = pendingBuild();
+      else if (status == Const.END)
+        widget = endBuild(context);
       else
         widget = Container(
           alignment: Alignment.center,
@@ -54,7 +57,7 @@ class _QuestionPageState extends State<QuestionPage> {
           ),
           centerTitle: true,
         ),
-        body: widget,
+        body: Center(child: widget),
       );
     });
   }
@@ -173,5 +176,72 @@ class _QuestionPageState extends State<QuestionPage> {
             ],
           ),
         ));
+  }
+
+  Widget endBuild(BuildContext context) {
+    return Obx(() {
+      List<UserJoin> listUser = questionController.listUser;
+      listUser.sort((a, b) => b.score.compareTo(a.score));
+      return Container(
+        height: 500,
+        padding: EdgeInsets.symmetric(vertical: 20),
+        color: white,
+        child: Column(
+          children: [
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 28),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Result: ",
+                  style:
+                      GoogleFonts.montserrat(fontSize: 20, color: Colors.black),
+                )),
+            SizedBox(height: 20),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, int index) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 28),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            listUser[index].name ?? "",
+                            maxLines: 1,
+                            style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: white),
+                          ),
+                        ),
+                        Text(
+                          "${listUser[index].score}" ?? "",
+                          maxLines: 1,
+                          style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: white),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              itemCount: listUser.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return SizedBox(height: 17);
+              },
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

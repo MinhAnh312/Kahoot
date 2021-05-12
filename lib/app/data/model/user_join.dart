@@ -21,7 +21,7 @@ class RoomInfo {
       this.description});
 
   RoomInfo.fromJson(Map<String, dynamic> json) {
-    indexQuestion = json['index_question'];
+    indexQuestion = json['index_question'] ;
     roomId = json['room_id'];
     roomKey = json['room_key'];
     status = json['status'];

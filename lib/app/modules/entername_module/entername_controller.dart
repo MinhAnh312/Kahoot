@@ -13,6 +13,7 @@ class EnterNameController extends GetxController {
 
   String roomKey;
   bool isJoined = false;
+  RxString name = "".obs;
 
   var document;
 
@@ -35,6 +36,7 @@ class EnterNameController extends GetxController {
       bool isExistName =
           listUser.indexWhere((element) => element.name == name) >= 0;
       if (!isExistName) {
+        this.name.value = name;
         joinRoomWriteDB(name);
       } else {
         isJoined = false;

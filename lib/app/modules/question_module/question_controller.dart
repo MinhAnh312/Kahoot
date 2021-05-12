@@ -6,54 +6,56 @@ import 'package:khoot/app/data/model/question.dart';
 import 'package:khoot/app/data/model/user_join.dart';
 import 'package:khoot/app/data/repository/question_repository.dart';
 import 'package:get/get.dart';
+import 'package:khoot/app/modules/entername_module/entername_controller.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 import 'package:khoot/app/modules/result_module/result_page.dart';
 import 'package:khoot/app/utils/util.dart';
+import 'package:logger/logger.dart';
 
 class QuestionController extends GetxController {
   final QuestionRepository repository;
 
   QuestionController({this.repository});
 
-  Timer _timer ;
+  Timer _timer;
+
   RxInt start = 20.obs;
   RxInt totalQuestion = 5.obs;
-  RxInt questionIndex = 1.obs;
+  RxInt questionIndex = 0.obs;
   RxInt result = 0.obs;
 
   String roomId;
+  bool firstQuestion = true;
 
-  Query query =
-      FirebaseFirestore.instance.collection(Const.QUESTION_COLLECTION);
+  var doc;
 
-  Query roomQuery =
-      FirebaseFirestore.instance.collection(Const.ROOM_COLLECTION);
+  var roomQuery = FirebaseFirestore.instance.collection(Const.ROOM_COLLECTION);
 
   RxList<Question> listQuestion = <Question>[].obs;
+  RxList<UserJoin> listUser = <UserJoin>[].obs;
   Question question = Question();
   Rx<RoomInfo> room = RoomInfo().obs;
 
   RxList<String> choose = <String>[].obs;
-  RxInt numberOfQuestion = 0.obs;
 
   String answer = "2";
   RxString status = "pending".obs;
   RxInt indexChoose;
   RxBool isTrue;
+  RxInt score = 0.obs;
 
   Future<void> getListQuestion() async {
-    QuerySnapshot querySnapshot = await query.get();
-    for (int i = 0; i < querySnapshot.docChanges.length; i++) {
-      listQuestion
-          .add(Question.fromJson(querySnapshot.docChanges[i].doc.data()));
-    }
+    var querySnapshot = await roomQuery.doc(roomId).get();
+    Logger().d(querySnapshot.data());
+    room.value = RoomInfo.fromJson(querySnapshot.data());
+    listQuestion.value = room.value.question;
   }
 
   void getQuestion() {
     start = 20.obs;
     indexChoose = 99.obs;
     isTrue = false.obs;
-    question = listQuestion[numberOfQuestion.value];
+    question = listQuestion[questionIndex.value - 1];
     choose.clear();
     choose.add(question.answer);
     choose.add(question.wrongAnswer1);
@@ -61,7 +63,8 @@ class QuestionController extends GetxController {
     choose.add(question.wrongAnswer3);
     answer = question.answer;
     shuffle(choose);
-    listQuestion.remove(question);
+    print(choose);
+    print(answer);
     startTimer();
   }
 
@@ -71,34 +74,22 @@ class QuestionController extends GetxController {
     EnterRoomController controller = Get.find();
     roomId = controller.roomKey;
     await getListQuestion();
-    roomQuery = roomQuery.where("room_key", whereIn: [roomId]);
-    roomQuery.snapshots().listen((querySnapshot) {
-      querySnapshot.docs.forEach((change) {
-        print(change.data());
-        room.value = RoomInfo.fromJson(change.data());
-        totalQuestion.value = room.value.totalQuestion;
-        status.value = room.value.status;
-        if(status.value == Const.START){
-          if(questionIndex.value <= room.value.indexQuestion){
-            questionIndex.value = room.value.indexQuestion;
-            getQuestion();
-          }
-        }
-      });
+    doc = roomQuery.doc(roomId).snapshots().listen((event) {
+      room.value = RoomInfo.fromJson(event.data());
+      listUser.value = room.value.userJoin;
+      totalQuestion.value = room.value.totalQuestion;
+      status.value = room.value.status;
+      if ((status.value == Const.START &&
+          questionIndex.value < room.value.indexQuestion)) {
+        questionIndex.value = room.value.indexQuestion;
+        getQuestion();
+      }
     });
-    //getQuestion();
     super.onInit();
   }
 
   void resetQuest() {
-    // questionIndex.value++;
-    // if (questionIndex.value > totalQuestion.value) {
-    //   stop();
-    // } else {
-    //   getQuestion();
-    // }
     if (questionIndex.value < totalQuestion.value) {
-      // questionIndex++;
       getQuestion();
     } else
       stop();
@@ -118,7 +109,7 @@ class QuestionController extends GetxController {
   @override
   void onClose() {
     // TODO: implement onClose
-    if(!Util.isEmpty(_timer)){
+    if (!Util.isEmpty(_timer)) {
       _timer.cancel();
     }
     super.onClose();
@@ -130,8 +121,8 @@ class QuestionController extends GetxController {
       oneSec,
       (Timer timer) {
         if (start.value == 0) {
+          isShowResult(score: 0);
           timer.cancel();
-          isShowResult();
         } else {
           start.value--;
         }
@@ -141,22 +132,40 @@ class QuestionController extends GetxController {
 
   void chooseAnswer(int index) {
     indexChoose.value = index;
+    int score = start.value;
     start.value = 0;
+    print("diem so: " + "$score");
+    isShowResult(score: score);
     _timer.cancel();
-    isShowResult();
   }
 
-  void isShowResult() {
+  void isShowResult({int score = 0}) {
     if (start.value == 0) {
       if (choose.indexOf(answer) == indexChoose.value) {
         isTrue.value = true;
+        this.score.value = this.score.value + score;
+        EnterNameController controller = Get.find();
+        roomQuery.doc(roomId).update({
+          "user_join": FieldValue.arrayRemove([
+            {"name": controller.name.value, "score": getNowScore()}
+          ])
+        });
+        roomQuery.doc(roomId).update({
+          "user_join": FieldValue.arrayUnion([
+            {"name": controller.name.value, "score": this.score.value}
+          ])
+        });
         result++;
       } else
         isTrue.value = false;
-      new Timer(new Duration(milliseconds: 2000), () async {
-        //resetQuest();
-      });
     }
+  }
+
+  int getNowScore() {
+    EnterNameController controller = Get.find();
+    UserJoin user = room.value.userJoin
+        .singleWhere((element) => element.name == controller.name.value);
+    return user.score;
   }
 
   void stop() {

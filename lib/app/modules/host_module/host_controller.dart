@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:khoot/app/const/const.dart';
@@ -68,21 +70,32 @@ class HostController extends GetxController {
   }
 
   void nextQuestion() {
+    int index = indexQuestion.value + 1;
     if (indexQuestion.value <= totalQuestion.value) {
       FirebaseFirestore.instance
           .collection(Const.ROOM_COLLECTION)
           .doc(roomKey)
           .update({
-        "index_question": indexQuestion.value++
+        "index_question": index,
+        "status": Const.NEXT_QUESTION
       });
-    }
-    else{
-      FirebaseFirestore.instance
-          .collection(Const.ROOM_COLLECTION)
-          .doc(roomKey)
-          .update({"status": Const.END});
+      new Timer(new Duration(milliseconds: 2000), () async {
+        FirebaseFirestore.instance
+            .collection(Const.ROOM_COLLECTION)
+            .doc(roomKey)
+            .update({"status": Const.START});
+        //resetQuest();
+      });
+
+    } else {
+      showResult();
     }
   }
+
+  void showResult() {
+    FirebaseFirestore.instance
+        .collection(Const.ROOM_COLLECTION)
+        .doc(roomKey)
+        .update({"status": Const.END});
+  }
 }
-
-

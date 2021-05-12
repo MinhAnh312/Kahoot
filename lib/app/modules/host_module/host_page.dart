@@ -61,14 +61,18 @@ class _HostPageState extends State<HostPage> {
             () => buttonPlay(
                 context, controller.buttonGame.value, "#F6E084", Colors.black,
                 () {
-              if(controller.buttonGame.value == Const.START) {
+              if (controller.buttonGame.value == Const.START) {
                 controller.startGame();
               }
-              if(controller.buttonGame.value == Const.NEXT_QUESTION){
+              if (controller.buttonGame.value == Const.NEXT_QUESTION) {
                 controller.nextQuestion();
               }
             }),
-          )
+          ),
+          SizedBox(height: 20),
+          buttonPlay(context, "Result", "#F6E084", Colors.black, () {
+            controller.showResult();
+          })
         ],
       )),
     );
@@ -77,6 +81,7 @@ class _HostPageState extends State<HostPage> {
   Widget listUser(BuildContext context) {
     return Obx(() {
       List<UserJoin> listUser = controller.listUser;
+      listUser.sort((a, b) => b.score.compareTo(a.score));
       return Container(
         height: 240,
         child: ListView.separated(
