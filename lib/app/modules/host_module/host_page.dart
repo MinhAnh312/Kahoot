@@ -55,8 +55,25 @@ class _HostPageState extends State<HostPage> {
       body: Center(
           child: Column(
         children: [
+          SizedBox(height: 10),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 28),
+            child: Obx(() => Text(
+                  "Question ${controller.indexQuestion}/${controller.totalQuestion}",
+                  style: GoogleFonts.sarabun(color: Colors.black, fontSize: 20),
+                )),
+          ),
+          SizedBox(height: 10),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 28),
+            child: Obx(() => Text(
+              "Status: ${controller.status}",
+              style: GoogleFonts.sarabun(color: Colors.black, fontSize: 20),
+            )),
+          ),
           SizedBox(height: 20),
           listUser(context),
+          SizedBox(height: 60),
           Obx(
             () => buttonPlay(
                 context, controller.buttonGame.value, "#F6E084", Colors.black,
@@ -72,6 +89,10 @@ class _HostPageState extends State<HostPage> {
           SizedBox(height: 20),
           buttonPlay(context, "Result", "#F6E084", Colors.black, () {
             controller.showResult();
+          }),
+          SizedBox(height: 20),
+          buttonPlay(context, "Reset", "#F6E084", Colors.black, () {
+            controller.reset();
           })
         ],
       )),
@@ -133,7 +154,7 @@ class _HostPageState extends State<HostPage> {
     return GestureDetector(
       onTap: voidCallback,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 41),
+        margin: EdgeInsets.symmetric(horizontal: 28),
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 13),

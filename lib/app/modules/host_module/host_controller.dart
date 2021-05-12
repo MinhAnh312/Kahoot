@@ -53,8 +53,8 @@ class HostController extends GetxController {
       if (status.value == Const.NEXT_QUESTION) {
         buttonGame.value = Const.NEXT_QUESTION;
       }
-      if (status.value == Const.END) {
-        buttonGame.value = Const.END;
+      if (status.value == Const.RESULT) {
+        //buttonGame.value = Const.END;
       }
     });
 
@@ -70,15 +70,12 @@ class HostController extends GetxController {
   }
 
   void nextQuestion() {
-    int index = indexQuestion.value + 1;
-    if (indexQuestion.value <= totalQuestion.value) {
+    if (indexQuestion.value < totalQuestion.value) {
+      int index = indexQuestion.value + 1;
       FirebaseFirestore.instance
           .collection(Const.ROOM_COLLECTION)
           .doc(roomKey)
-          .update({
-        "index_question": index,
-        "status": Const.NEXT_QUESTION
-      });
+          .update({"index_question": index, "status": Const.NEXT_QUESTION});
       new Timer(new Duration(milliseconds: 2000), () async {
         FirebaseFirestore.instance
             .collection(Const.ROOM_COLLECTION)
@@ -86,16 +83,35 @@ class HostController extends GetxController {
             .update({"status": Const.START});
         //resetQuest();
       });
-
     } else {
       showResult();
     }
+  }
+
+  void reset() {
+    // FirebaseFirestore.instance
+    //     .collection(Const.ROOM_COLLECTION)
+    //     .doc(roomKey)
+    //     .set({
+    //   "user_join": FieldValue.delete()
+    // },SetOptions(merge: true));
+    FirebaseFirestore.instance
+        .collection(Const.ROOM_COLLECTION)
+        .doc(roomKey)
+        .set({
+      "index_question": 1,
+      "status": Const.PENDING,
+      "user_join": listUser.map((v) {
+        v.score = 0;
+        return v.toJson();
+      }).toList()
+    },SetOptions(merge: true));
   }
 
   void showResult() {
     FirebaseFirestore.instance
         .collection(Const.ROOM_COLLECTION)
         .doc(roomKey)
-        .update({"status": Const.END});
+        .update({"status": Const.RESULT});
   }
 }
