@@ -14,4 +14,5 @@ abstract class Routes {
   static const EXPLORE = '/explore'; // explore page
   static const EXPLORE_ROON = '/explore_roon'; // ExploreRoon page
   static const EXPLORE_ROOM = '/explore_room'; // ExploreRoom page
+  static const HOST = '/host'; // Host page
 }

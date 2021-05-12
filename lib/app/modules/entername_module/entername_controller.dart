@@ -11,7 +11,7 @@ class EnterNameController extends GetxController {
 
   EnterNameController({this.repository});
 
-  String roomId;
+  String roomKey;
   bool isJoined = false;
 
   var document;
@@ -19,10 +19,10 @@ class EnterNameController extends GetxController {
   @override
   void onInit() async {
     EnterRoomController controller = Get.find();
-    roomId = controller.roomId;
+    roomKey = controller.roomKey;
     document = FirebaseFirestore.instance
         .collection(Const.ROOM_COLLECTION)
-        .doc(roomId);
+        .doc(roomKey);
     // TODO: implement onInit
     super.onInit();
   }

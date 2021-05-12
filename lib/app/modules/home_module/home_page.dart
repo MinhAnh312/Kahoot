@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:khoot/app/modules/edit_question/edit_question_page.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_page.dart';
 import 'package:khoot/app/modules/explore_room_module/explore_room_page.dart';
 import 'package:khoot/app/modules/home_module/home_controller.dart';
-import 'package:khoot/app/modules/host_module/edit_question_page.dart';
-import 'package:khoot/app/modules/result_module/result_page.dart';
 import 'package:khoot/app/theme/HexColor.dart';
 
 // ignore: must_be_immutable

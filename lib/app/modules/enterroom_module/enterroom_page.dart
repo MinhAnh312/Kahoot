@@ -78,7 +78,7 @@ class EnterRoomPage extends GetWidget<EnterRoomController> {
             hoverColor: white,
             //isCollapsed: true,
             focusColor: white,
-            border: InputBorder.none,
+            //border: InputBorder.none,
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: Colors.white)),

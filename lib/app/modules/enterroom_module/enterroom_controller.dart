@@ -10,7 +10,7 @@ class EnterRoomController extends GetxController {
 
   EnterRoomController({this.repository});
 
-  String roomId;
+  String roomKey;
 
   RxBool isExist = false.obs;
 
@@ -22,7 +22,7 @@ class EnterRoomController extends GetxController {
         await query.where("room_id", whereIn: [roomID]).get();
     isExist.value = querySnapshot.size > 0;
     if (isExist.value) {
-      this.roomId = querySnapshot.docs.first.data()['room_key'];
+      this.roomKey = querySnapshot.docs.first.data()['room_key'];
     }
     return isExist.value;
   }

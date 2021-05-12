@@ -1,7 +1,10 @@
+import 'package:khoot/app/modules/edit_question/edit_question_bindings.dart';
+import 'package:khoot/app/modules/edit_question/edit_question_page.dart';
+
+import '../../app/modules/host_module/host_page.dart';
+import '../../app/modules/host_module/host_bindings.dart';
 import '../../app/modules/explore_room_module/explore_room_page.dart';
 import '../../app/modules/explore_room_module/explore_room_bindings.dart';
-import 'package:khoot/app/modules/host_module/edit_question_bindings.dart';
-import 'package:khoot/app/modules/host_module/edit_question_page.dart';
 import '../../app/modules/question_module/question_page.dart';
 import '../../app/modules/question_module/question_bindings.dart';
 import '../../app/modules/entername_module/entername_page.dart';
@@ -67,6 +70,11 @@ abstract class AppPages {
       name: Routes.EXPLORE_ROOM,
       page: () => ExploreRoomPage(),
       binding: ExploreRoomBinding(),
+    ),
+    GetPage(
+      name: Routes.HOST,
+      page: () => HostPage(),
+      binding: HostBinding(),
     ),
   ];
 }

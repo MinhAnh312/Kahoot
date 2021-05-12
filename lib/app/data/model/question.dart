@@ -4,13 +4,15 @@ class Question {
   String wrongAnswer1;
   String wrongAnswer2;
   String wrongAnswer3;
+  bool isSelect = false;
 
   Question(
       {this.answer,
-        this.ask,
-        this.wrongAnswer1,
-        this.wrongAnswer2,
-        this.wrongAnswer3});
+      this.ask,
+      this.wrongAnswer1,
+      this.wrongAnswer2,
+      this.wrongAnswer3,
+      this.isSelect = false});
 
   Question.fromJson(Map<String, dynamic> json) {
     answer = json['Answer'];

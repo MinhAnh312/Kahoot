@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khoot/app/data/model/question.dart';
-
 import '../../theme/HexColor.dart';
 import '../../theme/app_colors.dart';
 import 'edit_question_controller.dart';
 
 class EditQuestionPage extends GetWidget<EditQuestionController> {
   final EditQuestionController hostController = Get.put(EditQuestionController());
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class EditQuestionPage extends GetWidget<EditQuestionController> {
               SizedBox(height: 30),
               textInput("Name of Set", HexColor("#91919F"), white),
               SizedBox(height: 8),
-              textInput("Description", HexColor("#91919F"), white),
+              //textInput("Description", HexColor("#91919F"), white),
               SizedBox(height: 20),
               buildListQuest(context),
               SizedBox(height: 30),
@@ -76,6 +76,7 @@ class EditQuestionPage extends GetWidget<EditQuestionController> {
           BoxDecoration(color: fill, borderRadius: BorderRadius.circular(10)),
       constraints: BoxConstraints(minHeight: 41),
       child: TextFormField(
+        controller: searchController,
         maxLines: null,
         cursorColor: green,
         decoration: InputDecoration(

@@ -1,19 +1,24 @@
+import 'package:khoot/app/data/model/question.dart';
+
 class RoomInfo {
   int indexQuestion;
-  int question ;
   String roomId;
   String roomKey;
   String status;
   int totalQuestion;
+  String description;
   List<UserJoin> userJoin;
+  List<Question> question;
 
   RoomInfo(
       {this.indexQuestion,
-        this.roomId,
-        this.roomKey,
-        this.status,
-        this.totalQuestion,
-        this.userJoin,this.question});
+      this.roomId,
+      this.roomKey,
+      this.status,
+      this.totalQuestion,
+      this.userJoin,
+      this.question,
+      this.description});
 
   RoomInfo.fromJson(Map<String, dynamic> json) {
     indexQuestion = json['index_question'];
@@ -21,7 +26,13 @@ class RoomInfo {
     roomKey = json['room_key'];
     status = json['status'];
     totalQuestion = json['total_question'];
-    question = json['question'];
+    if (json['question'] != null) {
+      question = <Question>[];
+      json['question'].forEach((v) {
+        question.add(new Question.fromJson(v));
+      });
+    }
+    description = json['description'];
     if (json['user_join'] != null) {
       userJoin = <UserJoin>[];
       json['user_join'].forEach((v) {
@@ -37,8 +48,12 @@ class RoomInfo {
     data['room_key'] = this.roomKey;
     data['status'] = this.status;
     data['total_question'] = this.totalQuestion;
+    data['description'] = this.description;
     if (this.userJoin != null) {
       data['user_join'] = this.userJoin.map((v) => v.toJson()).toList();
+    }
+    if (this.question != null) {
+      data['question'] = this.question.map((v) => v.toJson()).toList();
     }
     return data;
   }

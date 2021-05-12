@@ -8,6 +8,7 @@ import 'package:khoot/app/data/repository/question_repository.dart';
 import 'package:get/get.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 import 'package:khoot/app/modules/result_module/result_page.dart';
+import 'package:khoot/app/utils/util.dart';
 
 class QuestionController extends GetxController {
   final QuestionRepository repository;
@@ -68,7 +69,7 @@ class QuestionController extends GetxController {
   Future<void> onInit() async {
     // TODO: implement onInit
     EnterRoomController controller = Get.find();
-    roomId = controller.roomId;
+    roomId = controller.roomKey;
     await getListQuestion();
     roomQuery = roomQuery.where("room_key", whereIn: [roomId]);
     roomQuery.snapshots().listen((querySnapshot) {
@@ -80,7 +81,6 @@ class QuestionController extends GetxController {
         if(status.value == Const.START){
           if(questionIndex.value <= room.value.indexQuestion){
             questionIndex.value = room.value.indexQuestion;
-            numberOfQuestion.value = room.value.question;
             getQuestion();
           }
         }
@@ -118,7 +118,9 @@ class QuestionController extends GetxController {
   @override
   void onClose() {
     // TODO: implement onClose
-    _timer.cancel();
+    if(!Util.isEmpty(_timer)){
+      _timer.cancel();
+    }
     super.onClose();
   }
 
