@@ -41,7 +41,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  test:
+  
 dependency_overrides:
   google_fonts: ^2.0.0
 
