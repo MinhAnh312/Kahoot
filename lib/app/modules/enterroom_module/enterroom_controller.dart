@@ -1,56 +1,48 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:khoot/app/const/const.dart';
-import 'package:khoot/app/data/repository/enterroom_repository.dart';
-import 'package:get/get.dart';
-import 'package:khoot/app/modules/entername_module/entername_page.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 
-class EnterRoomController extends GetxController {
-  final EnterRoomRepository repository;
+void main() {
+  // var obj = new EnterRoomController();
+  var array = EnterRoomController.rooms;
+  group('Enter Room Test', () {
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('111111', array));
+    });
 
-  EnterRoomController({this.repository});
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('222222', array));
+    });
 
-  static var rooms = ['111111', '222222', '333333', '444444', '555555', '666666'];
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('333333', array));
+    });
 
-  var _obj = ''.obs;
-  set obj(value) => _obj.value = value;
-  get obj => _obj.value;
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('444444', array));
+    });
 
-  static String enterroom(String _roomid, rooms) {
-      if (_roomid.length < 6) return 'Lack of characters';
-      else if (rooms.contains(_roomid)) return 'Sucess';
-      else return 'Failed';
-  }
-  String roomId;
-  
-  String roomKey;
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('555555', array));
+    });
 
-  RxBool isExist = false.obs;
+    test('Truy cập phòng thành công', () {
+      expect('Sucess', EnterRoomController.enterroom('666666', array));
+    });
 
-  CollectionReference query =
-      FirebaseFirestore.instance.collection(Const.ROOM_COLLECTION);
+    test('Phòng không tồn tại', () {
+      expect('Failed', EnterRoomController.enterroom('117412', array));
+    });
 
-  Future<bool> getListRoom(String roomID) async {
-    QuerySnapshot querySnapshot =
-        await query.where("room_id", whereIn: [roomID]).get();
-    isExist.value = querySnapshot.size > 0;
-    if (isExist.value) {
-      this.roomKey = querySnapshot.docs.first.data()['room_key'];
-    }
-    return isExist.value;
-  }
+    test('Phòng không tồn tại', () {
+      expect('Failed', EnterRoomController.enterroom('781132', array));
+    });
 
-  @override
-  Future<void> onInit() async {
-    // TODO: implement onInit
-    super.onInit();
-  }
+    test('Thiếu ký tự', () {
+      expect('Lack of characters', EnterRoomController.enterroom('1132', array));
+    });
 
-  Future<void> enterRoom(String roomID) async {
-    bool isJoin = await getListRoom(roomID);
-    if (isJoin) {
-      Get.to(EnterNamePage());
-    } else
-      Fluttertoast.showToast(msg: "Phòng không đúng");
-  }
+    test('Thiếu ký tự', () {
+      expect('Lack of characters', EnterRoomController.enterroom('11', array));
+    });
+  });
 }
