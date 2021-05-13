@@ -4,5 +4,5 @@ class Const{
   static const String PENDING = 'pending';
   static const String NEXT_QUESTION = "next";
   static const String START = "start";
-  static const String END = "end";
+  static const String RESULT = "result";
 }

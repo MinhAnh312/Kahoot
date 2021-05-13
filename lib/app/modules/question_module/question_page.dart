@@ -25,7 +25,7 @@ class _QuestionPageState extends State<QuestionPage> {
         widget = startBuild();
       } else if (status == Const.PENDING)
         widget = pendingBuild();
-      else if (status == Const.END)
+      else if (status == Const.RESULT)
         widget = endBuild(context);
       else
         widget = Container(
