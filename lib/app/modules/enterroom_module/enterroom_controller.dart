@@ -9,14 +9,19 @@ class EnterRoomController extends GetxController {
   final EnterRoomRepository repository;
 
   EnterRoomController({this.repository});
-  
-  var rooms = ['111111', '222222', '333333', '444444', '555555', '666666'];
 
-  String enterroom(String _roomid) {
+  static var rooms = ['111111', '222222', '333333', '444444', '555555', '666666'];
+
+  var _obj = ''.obs;
+  set obj(value) => _obj.value = value;
+  get obj => _obj.value;
+
+  static String enterroom(String _roomid, rooms) {
       if (_roomid.length < 6) return 'Lack of characters';
       else if (rooms.contains(_roomid)) return 'Sucess';
       else return 'Failed';
   }
+  String roomId;
   
   String roomKey;
 
