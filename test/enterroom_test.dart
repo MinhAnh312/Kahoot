@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:khoot/app/modules/enterroom_module/enterroom_controller.dart';
 
 void main() {
-  var obj = EnterRoomController();
+  var array = EnterRoomController.rooms;
   group('Enter Room Test', () {
     test('Truy cập phòng thành công', () {
       expect('Sucess', obj.enterRoom('111111'));
